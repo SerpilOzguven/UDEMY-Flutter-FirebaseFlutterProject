@@ -23,9 +23,7 @@ class _LineIconsPageState extends State<LineIconsPage> {
             const Icon(Icons.person),
             const Icon(LineIcons.user),
             LineIcon.user(),
-            Icon(LineIcons.values['code'],color: Colors.red,),
-            Icon(LineIcons.byName['code'],color: Colors.blue,),
-          ],
+        ],
         ),
       ),
     );
