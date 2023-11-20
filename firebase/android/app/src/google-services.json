@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "505620693947",
+    "project_id": "fir-fddd6",
+    "storage_bucket": "fir-fddd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505620693947:android:6a7ab635da3dda1a013a9e",
+        "android_client_info": {
+          "package_name": "com.serpilozguven"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Kl7i_amnS0kV3WNYXbCe9ED8ZgYV7mM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
