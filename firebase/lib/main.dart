@@ -1,6 +1,10 @@
-import 'package:firebase/home_page.dart';
+
+import 'package:firebase/ui/landing_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,13 +18,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Firebase',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(create: (context)=>AuthProvider())
+      ],
+      child: GetMaterialApp(
+        title: 'Firebase',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home:const LandingPage (),
       ),
-      home:const HomePage(),
     );
   }
 }
