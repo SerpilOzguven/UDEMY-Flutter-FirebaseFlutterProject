@@ -1,4 +1,4 @@
-import 'package:firebase/ui/auth/otp.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,36 +16,34 @@ class AuthService{
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (signInWithCredential) async {
-        print('hata var2');
         print('verificationCompleted');
         await _auth.signInWithCredential(signInWithCredential);
       },
       verificationFailed: (FirebaseAuthException exception) {
-        var exceptionCode = AuthExceptionHandler.handleException(exception.code);
-        var exceptionMessage = AuthExceptionHandler .generateExceptionMessage (exceptionCode);
-
-        Get.showSnackbar(GetSnackBar(
-          title: 'Hata',
-          message: exceptionMessage,
-          duration: const Duration(seconds: 1),
-        ));
+        //var exceptionCode = AuthExceptionHandler.exception()
+        //var exceptionMessage =AuthExceptionHandler.generateExceptionMessage(exceptionCode);
+        //Get.showSnackbar(GetSnackBar(
+         // title: 'Hata',
+          //message: exceptionMessage,
+        //  duration: const Duration(seconds: 1),
+        //));
       },
       codeSent: (verificationId, forceResendingToken) {
-        Get.to(() =>OtpScreen(verificationId:verificationId));
+        //Get.to(()=>OtpScreen(
+           // verificationId: verificationId
+       // ));
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print('codeAutoRetrievalTimeout');
       },
     );
   }
-
   Future<User?> phoneNumberControl(String smsCode, verificationId) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsCode);
     var userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user;
   }
-
   Future<User?> registerWithGoogle()async{
     final googleSignIn = GoogleSignIn();
      var account = await googleSignIn.signIn();
@@ -59,15 +57,14 @@ class AuthService{
         }
      }
   }
-
   Future<User?> loginWithEmail(String email, String password)async{
     var credentinal = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return credentinal.user;
   }
-
   Future<void> signOut()async{
     final googleSignIn = GoogleSignIn();
     await _auth.signOut();
     googleSignIn.signOut();
   }
 }
+

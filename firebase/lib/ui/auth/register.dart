@@ -1,8 +1,9 @@
-// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:firebase/user_model.dart';
+import 'package:firebase/ui/auth/login.dart';
 import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
@@ -13,10 +14,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
+  final nameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   var email = true;
 
@@ -45,18 +46,10 @@ class _RegisterState extends State<Register> {
                     ],
                   )
                 else
-                  TextFormField(
-                    controller: phoneController,
-                    validator: (value) {
-                      if(value!.length < 9){
-                        return 'En az dokuz karakter giriniz';
-                      }
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone),
-                    ),
+                  Column(
+                    children: [
+                      phoneInput(),
+                    ],
                   ),
                 sizedBox,
                 Row(
@@ -74,7 +67,6 @@ class _RegisterState extends State<Register> {
                 registerButton(authProvider, context),
                 sizedBox,
 
-
                 GestureDetector(
                   onTap: (){
                     Get.off(()=> const Login());
@@ -82,21 +74,20 @@ class _RegisterState extends State<Register> {
                   child: const Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        'Hesabýnýz var ný? Giriþ yapýn!',
+                        'Hesabýnýz var mý? Giriþ yapýn.',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )),
                 ),
                 sizedBox,
                 sizedBox,
                 signInWithGoogle(authProvider, context),
-            ],
-        ),
+              ],
+            ),
           ),
       ),
     ),
   );
 }
-
   GestureDetector signInWithGoogle(authProvider, BuildContext context) {
     return GestureDetector(
                 onTap: (){
@@ -120,14 +111,22 @@ class _RegisterState extends State<Register> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/icons/google_icon.png',height: 30,),
-                      const SizedBox(width: 10)
-                      const Text('Sign in With Google',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-                ],
-            )),
+                      Image.asset(
+                        'assets/icons/google_icon.png',
+                        height: 30,),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'Sign in With Google',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               );
-  },
-
+            }
   SizedBox registerButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
       width: double.infinity,
@@ -160,6 +159,22 @@ class _RegisterState extends State<Register> {
   );
 }
 
+
+  TextFormField phoneInput(){
+    return TextFormField(
+      controller: phoneController,
+      validator: (value) {
+        if (value!.length < 9) {
+          return 'En az 9 karakter giriniz';
+        }
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Phone Number',
+        prefixIcon: Icon(Icons.phone),
+      ),
+    );
+  }
   TextFormField passwordInput() {
     return TextFormField(
               controller: phoneController,
@@ -176,7 +191,6 @@ class _RegisterState extends State<Register> {
               ),
             );
   }
-
   TextFormField emailInput() {
     return TextFormField(
               controller: emailController,
@@ -191,7 +205,6 @@ class _RegisterState extends State<Register> {
                   border: OutlineInputBorder(),
                   hintText: 'Email',
                   prefixIcon: Icon(Icons.email),
-
               ),
             );
   }

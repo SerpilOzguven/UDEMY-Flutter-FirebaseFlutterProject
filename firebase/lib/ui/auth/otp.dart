@@ -1,9 +1,10 @@
-// TODO Implement this library.import 'package:firebase/ui/home_page.dart';
-import 'package:firebase/ui/landing_page.dart';
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase/ui/landing_page.dart';
+
 
 class OtpScreen extends StatefulWidget {
 
@@ -57,10 +58,10 @@ class _OtpScreenState extends State<OtpScreen> {
                       _authProvider.phoneNumberControl(
                       controller.text, widget.verificationId).then((value){
                         if(value !null){
-                        Get.offAll(()=> const LandingPage());
-            }
-            });
-            }
+                        Get.offAll(()=>  LandingPage());
+                  }
+                });
+              }
             },
               child:const Text(
                 'Check Code',

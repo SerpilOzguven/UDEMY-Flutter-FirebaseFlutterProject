@@ -88,7 +88,9 @@ class AuthExceptionHandler {
         status = AuthResultStatus.undefined;
     }
     return status;
-  }
+}
+
+
 
   ///
   /// Accepts AuthExceptionHandler.errorType

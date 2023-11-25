@@ -182,7 +182,7 @@ class _LoginState extends State<Login> {
   TextFormField emailInput() {
     return TextFormField(
       controller: emailController,
-      validator: (value){
+      validator: (value) {
         /*
         bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
             .hasMatch(value!);
@@ -192,7 +192,7 @@ class _LoginState extends State<Login> {
 
          */
       },
-      decoration:const InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Email',
         prefixIcon: Icon(Icons.email),
@@ -201,6 +201,3 @@ class _LoginState extends State<Login> {
     );
   }
 
-
-  }
-}
