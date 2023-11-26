@@ -2,6 +2,7 @@
 import 'package:firebase/ui/register.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/ui/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
@@ -102,34 +102,47 @@ class _LoginState extends State<Login> {
   }
 
   GestureDetector signInWithGoogle(
-      authProvider, BuildContext context) {
+      AuthProvider authProvider, BuildContext context) {
     return GestureDetector(
                 onTap: (){
-                  authProvider.loginWithEmail().then((value) {
+                  authProvider.registerWithGoogle().then((value) {
                     Get.offAll(()=>const LandingPage(isLogin:true));
                   }
-                  });
-                },
-                child: Container(
-                    width: Get.width,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(color: Colors.grey.shade400,offset: Offset(0, 0),blurRadius: 3,spreadRadius: 3)
-                        ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icons/google_icon.png',height: 30,),
-                        const SizedBox(width: 10)
-                        const Text('Sign in With Google',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-                      ],
-                    )),
-              );
-  },
+                });
+              },
+              child: Container(
+                width: Get.width,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      offset:const Offset(0, 0),
+                      blurRadius: 3,spreadRadius: 3)
+                  ]),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                  'assets/icons/google_icon.png',
+                  height: 30,
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Sign in With Google',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
 
   SizedBox loginButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
@@ -150,7 +163,7 @@ class _LoginState extends State<Login> {
             }
           });
         }else{
-          authProvider.registerWithPhoneNumber(phoneController.text);
+          authProvider.registerWithPhoneNumber(phoneController.text,null);
         }
       }
     },

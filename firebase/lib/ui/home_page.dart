@@ -1,3 +1,5 @@
+import 'package:firebase/provider/user_provider.dart';
+import 'package:firebase/ui/auth/profile.dart';
 import 'package:firebase/ui/landing_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +24,29 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.green, colorText: Colors.white);
       });
     }
+
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    Provider.of<UserProvider>(context).getMap();
     return Scaffold(
       appBar: AppBar(
         title:const Text('Home Page'),
         actions: [
           IconButton(onPressed: (){
-            authProvider.signOut(); //.then((value) => Get.offAll(()=>const LandingPage()));
-          }, icon:const Icon(Icons.logout))
+            authProvider
+                .signOut(); //.then((value) => Get.offAll(()=>const LandingPage()));
+          }, icon:const Icon(Icons.logout)),
+          IconButton(onPressed: (){
+            Get.to(()=> const Profile()); //.then((value) => Get.offAll(()=>const LandingPage()));
+          }, icon:const Icon(Icons.person)),
         ],
        ),
-      body: Container(),
+      body: Center(
+        child: Text(authProvider.user!.id!),
+      ),
     );
   }
 }

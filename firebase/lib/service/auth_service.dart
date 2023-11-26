@@ -12,7 +12,7 @@ class AuthService{
     return credentinal.user;
   }
 
-  registerWithPhoneNumber(String phoneNumber) async {
+  registerWithPhoneNumber(String phoneNumber,name) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (signInWithCredential) async {
@@ -20,18 +20,16 @@ class AuthService{
         await _auth.signInWithCredential(signInWithCredential);
       },
       verificationFailed: (FirebaseAuthException exception) {
-        //var exceptionCode = AuthExceptionHandler.exception()
-        //var exceptionMessage =AuthExceptionHandler.generateExceptionMessage(exceptionCode);
-        //Get.showSnackbar(GetSnackBar(
-         // title: 'Hata',
-          //message: exceptionMessage,
-        //  duration: const Duration(seconds: 1),
-        //));
+        var exceptionCode = AuthExceptionHandler.handleException.exception();
+        var exceptionMessage = AuthExceptionHandler.generateExceptionMessage(exceptionCode);
+        Get.showSnackbar(GetSnackBar(
+          title: 'Hata',
+          message: exceptionMessage,
+          duration: const Duration(seconds: 1),
+        ));
       },
       codeSent: (verificationId, forceResendingToken) {
-        //Get.to(()=>OtpScreen(
-           // verificationId: verificationId
-       // ));
+        Get.to(() => OtpScreen(verificationId: verificationId,name: name));
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print('codeAutoRetrievalTimeout');
@@ -65,6 +63,10 @@ class AuthService{
     final googleSignIn = GoogleSignIn();
     await _auth.signOut();
     googleSignIn.signOut();
+  }
+  User? currentUser(){
+    return _auth.currentUser;
+
   }
 }
 

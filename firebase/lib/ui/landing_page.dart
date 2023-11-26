@@ -20,7 +20,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final _userProvider = Provider.of<UserProvider>(context);
+    final _authProvider = Provider.of<AuthProvider>(context);
     return  Scaffold(
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -29,12 +29,14 @@ class _LandingPageState extends State<LandingPage> {
               return const Center(
                 child: CircularProgressIndicator(),);
             }else if(snapshot.hasData) {
-              return  HomePage(isLogin:widget.isLogin ??  false);
+              if(_authProvider.user.id != null){
+                return const HomePage();
+              }else{
+                return Center(child: CircularProgressIndicator(),);
+              }
             }else if(snapshot.hasError){
               return Center(
-                  child: Text('Bir hata var' + snapshot.error.toString()),
-
-              );
+                  child: Text('Bir hata var' + snapshot.error.toString()),);
             }else{
               return Register();
             }

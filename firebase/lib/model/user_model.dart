@@ -1,9 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel{
+  String? id;
+  String? email;
+  String? name;
+  String? phoneNumber;
+  MyMap? myMap;
+  List? liste;
+  Timestamp? degerim;
+
+
+
+  UserModel({this.email,this.id,this.name,this.phoneNumber,this.myMap,this.liste,this.degerim});
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    email: json['email'],
+    phoneNumber: json['phoneNumber'],
+    id: json['id'],
+    name: json['name'],
+    degerim: json['degerim'],
+    //liste:List<int>.from(json['liste']) ,
+    myMap:MyMap.fromJson(json["myMap"]),
+  );
+
+  factory UserModel.fromDoc(DocumentSnapshot<Map<String,dynamic>> source)=>
+      UserModel.fromJson(source.data()!);
+
+}
+
+class MyMap{
   var id;
-  var email;
+  var school;
 
-  UserModel({this.email});
+  MyMap({this.id,this.school});
 
-  factory UserModel.fromJason(Map<String, dynamic> json) => UserModel(
-    email: json['email']);
+
+  factory MyMap.fromJson(Map<String, dynamic> json) => MyMap(
+    id: json['id'],
+    school: json['school'],
+  );
+
 }

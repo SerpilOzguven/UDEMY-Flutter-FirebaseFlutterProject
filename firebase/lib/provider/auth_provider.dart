@@ -1,6 +1,7 @@
 // TODO Implement this library.import 'package:firebase/model/user_model.dart';
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/service/auth_service.dart';
+import 'package:firebase/service/user_service.dart';
 import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,20 @@ import 'package:get/get.dart';
 class AuthProvider extends ChangeNotifier{
 
   final authService = AuthService();
-  UserModel user = UserModel();
+  final userService = UserService();
+  UserModel? user = UserModel();
+
+  AuthProvider(){
+    currentUser();
+  }
+
 
   Future registerWithEmail(String email, String password, String name) async {
     try {
       var user = await authService.registerWithEmail(email, password);
       user!.sendEmailVerification();
       FirebaseAuth.instance.signOut();
+      await userService.saveUser(email,name,user.uid)!;
       return 'Mailinize onay kodu gönderilmiþtir';
     } catch (e) {
       var exception = AuthExceptionHandler.handleException(e);
@@ -23,19 +31,30 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
-  void registerWithPhoneNumber(String phoneNumber) async {
+  void registerWithPhoneNumber(String phoneNumber,name) async {
     try {
-      await authService.registerWithPhoneNumber(phoneNumber);
+      await authService.registerWithPhoneNumber(phoneNumber,name);
     } catch (e) {
       print('hata var $e');
     }
   }
-  Future<User?> phoneNumberControl(String smsCode, verificationId)async{
+  Future<UserModel?> phoneNumberControl(String smsCode, verificationId, name)async{
     try {
-      return await authService.phoneNumberControl(smsCode, verificationId);
+      User? user2 = await authService.phoneNumberControl(smsCode, verificationId);
+      var result = await userService.userController(user2!.uid);
+      if(result != null) {
+        user = result;
+        notifyListeners();
+        return user;
+      }else{
+        await userService.saveUser(user2.phoneNumber!,user2.uid,name,isEmail: false);
+        user = (await userService.readUser(user2.uid))!;
+        notifyListeners();
+        return user;
+      }
     } catch (e) {
       var exceptionCode = AuthExceptionHandler.handleException(e);
-      var exceptionMessage = AuthExceptionHandler .generateExceptionMessage (exceptionCode);
+      var exceptionMessage = AuthExceptionHandler.generateExceptionMessage (exceptionCode);
       Get.showSnackbar(GetSnackBar(
         title: 'Hata',
         message: exceptionMessage,
@@ -45,10 +64,21 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
-  Future<User?> registerWithGoogle()async{
+  Future<UserModel?> registerWithGoogle()async{
     try{
-      return await authService.registerWithGoogle();
+      var user2 = await authService.registerWithGoogle();
+      var result = await userService.userController(user2!.uid);
+      if(result != null) {
+        user = result;
+        notifyListeners();
+        return user;
 
+      }else{
+        await userService.saveUser(user2.email!, user2.displayName!, user2.uid);
+        user = (await userService.readUser(user2.uid))!;
+        notifyListeners();
+        return user;
+      }
     }catch(e){
       print('hata var $e');
       return null;
@@ -57,8 +87,10 @@ class AuthProvider extends ChangeNotifier{
 
   Future loginWithEmail(String email, String password)async{
     try{
-      var user = await authService.loginWithEmail(email,password);
-      if(user.emailVerified) {
+      var firebaseUser = await authService.loginWithEmail(email,password);
+      if(firebaseUser!.emailVerified) {
+        user = (await userService.readUser(firebaseUser.uid))!;
+        notifyListeners();
         return user;
       }else{
         return 'Lütfen mailinize gelen kodu onaylayýnýz';
@@ -86,5 +118,13 @@ class AuthProvider extends ChangeNotifier{
       }
 
     }
+   Future<void> currentUser()async{
+    User? firebaseUser = authService.currentUser();
+    if(firebaseUser != null){
+      user = await userService.readUser(firebaseUser!.uid);
+      notifyListeners();
+    }
+
+   }
   }
 

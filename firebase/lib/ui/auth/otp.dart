@@ -9,7 +9,8 @@ import 'package:firebase/ui/landing_page.dart';
 class OtpScreen extends StatefulWidget {
 
   final verificationId;
-  const OtpScreen({super.key, this.verificationId});
+  final name;
+  const OtpScreen({super.key, this.verificationId, this.name,});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -56,7 +57,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   child:ElevatedButton(onPressed: (){
                     if(formKey.currentState!.validate()){
                       _authProvider.phoneNumberControl(
-                      controller.text, widget.verificationId).then((value){
+                      controller.text, widget.verificationId,widget.name).then((value){
                         if(value !null){
                         Get.offAll(()=>  LandingPage());
                   }

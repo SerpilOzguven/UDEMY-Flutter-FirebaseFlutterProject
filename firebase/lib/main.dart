@@ -1,5 +1,6 @@
 
-
+import 'package:firebase/provider/auth_provider.dart';
+import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/landing_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(create: (context)=>AuthProvider())
+        ChangeNotifierProvider<AuthProvider>(create: (context)=>AuthProvider()),
+        ChangeNotifierProvider<UserProvider>(create: (context)=>UserProvider())
       ],
       child: GetMaterialApp(
         title: 'Firebase',
