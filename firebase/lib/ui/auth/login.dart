@@ -1,4 +1,5 @@
 // TODO Implement this library.
+import 'package:firebase/model/user_model.dart';
 import 'package:firebase/ui/register.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/ui/home_page.dart';
@@ -104,9 +105,12 @@ class _LoginState extends State<Login> {
   GestureDetector signInWithGoogle(
       AuthProvider authProvider, BuildContext context) {
     return GestureDetector(
-                onTap: (){
+                onTap: () {
                   authProvider.registerWithGoogle().then((value) {
-                    Get.offAll(()=>const LandingPage(isLogin:true));
+                    if (value != null) {
+                      await Provider.of<UserProvider>(context,listen: false).currentUser();
+                      Get.offAll(() => const LandingPage(isLogin: true));
+                    }
                   }
                 });
               },
@@ -148,16 +152,17 @@ class _LoginState extends State<Login> {
     return SizedBox(
         width: double.infinity,
         height: 65
-        child:ElevatedButton(onPressed: (){
-      if(formKey.currentState!.validate()){
-        if(isEmail){
-          authProvider
-              .registerWithEmail(
-              emailController.text, passwordController.text)
-              .then((value) {
-            if(value.runtimeType == User) {
-              Get.offAll(()=>const LandingPage());
-            }else{
+        child:ElevatedButton(
+        onPressed: (){
+          if(formKey.currentState!.validate()){
+            if(isEmail){
+              authProvider
+                .loginWithEmail(emailController.text, passwordController.text)
+                .then((value)async {
+              if(value.runtimeType == UserModel) {
+                await Provider.of<UserProvider>(context,listen: false).currentUser();
+                Get.offAll(()=>const LandingPage());
+              }else{
 
 
             }

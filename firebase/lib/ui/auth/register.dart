@@ -4,6 +4,7 @@ import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/auth/login.dart';
 import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -96,11 +97,12 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  GestureDetector signInWithGoogle(authProvider, BuildContext context) {
+  GestureDetector signInWithGoogle(AuthProvider authProvider, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        authProvider.registerWithGoogle().then((value) {
+        authProvider.registerWithGoogle().then((value)async {
           if (value != null) {
+            await Provider.of<UserProvider>(context,listen: false).currentUser();
             Get.snackbar('Baþarýlý', 'Baþarýyla giriþ yapýldý',
                 backgroundColor: Colors.green, colorText: Colors.white);
           }
@@ -142,7 +144,7 @@ class _RegisterState extends State<Register> {
   SizedBox registerButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
         width: double.infinity,
-        height: 55,
+        height: 65,
         child:ElevatedButton(onPressed: ()
     {
       if (formKey.currentState!.validate()) {
@@ -150,13 +152,15 @@ class _RegisterState extends State<Register> {
           authProvider
               .registerWithEmail(
               emailController.text, passwordController.text,
-              nameController.text).then((value) {
+              nameController.text).then((value)async {
             if (value != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
+             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(value), duration: const Duration(seconds: 1),
+
                 ),
               );
+             Get.to(()=>const Login());
           }
           });
         } else {

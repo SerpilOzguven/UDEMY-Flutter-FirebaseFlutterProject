@@ -1,3 +1,4 @@
+import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/auth/profile.dart';
 import 'package:firebase/ui/landing_page.dart';
@@ -29,15 +30,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _userProvider = Provider.of<UserProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    Provider.of<UserProvider>(context).getMap();
+    //Provider.of<UserProvider>(context).getMap();
     return Scaffold(
       appBar: AppBar(
         title:const Text('Home Page'),
         actions: [
           IconButton(onPressed: (){
             authProvider
-                .signOut(); //.then((value) => Get.offAll(()=>const LandingPage()));
+                .signOut().then((value){
+                  _userProvider.user = UserModel();
+            }); //.then((value) => Get.offAll(()=>const LandingPage()));
           }, icon:const Icon(Icons.logout)),
           IconButton(onPressed: (){
             Get.to(()=> const Profile()); //.then((value) => Get.offAll(()=>const LandingPage()));
@@ -45,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         ],
        ),
       body: Center(
-        child: Text(authProvider.user!.id!),
+        child: Text(_userProvider.user.id!),
       ),
     );
   }

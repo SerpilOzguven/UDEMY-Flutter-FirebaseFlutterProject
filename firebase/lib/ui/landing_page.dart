@@ -20,7 +20,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<AuthProvider>(context);
+    final _userProvider = Provider.of<UserProvider>(context);
     return  Scaffold(
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -29,7 +29,7 @@ class _LandingPageState extends State<LandingPage> {
               return const Center(
                 child: CircularProgressIndicator(),);
             }else if(snapshot.hasData) {
-              if(_authProvider.user.id != null){
+              if(_userProvider.user.id != null){
                 return const HomePage();
               }else{
                 return Center(child: CircularProgressIndicator(),);

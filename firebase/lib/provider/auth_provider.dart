@@ -1,4 +1,4 @@
-// TODO Implement this library.import 'package:firebase/model/user_model.dart';
+// TODO Implement this library.// TODO Implement this library.import 'package:firebase/model/user_model.dart';
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/service/auth_service.dart';
 import 'package:firebase/service/user_service.dart';
@@ -7,15 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AuthProvider extends ChangeNotifier{
-
+class AuthProvider extends ChangeNotifier {
   final authService = AuthService();
   final userService = UserService();
   UserModel? user = UserModel();
-
-  AuthProvider(){
-    currentUser();
-  }
 
 
   Future registerWithEmail(String email, String password, String name) async {
@@ -118,13 +113,6 @@ class AuthProvider extends ChangeNotifier{
       }
 
     }
-   Future<void> currentUser()async{
-    User? firebaseUser = authService.currentUser();
-    if(firebaseUser != null){
-      user = await userService.readUser(firebaseUser!.uid);
-      notifyListeners();
-    }
 
-   }
   }
 

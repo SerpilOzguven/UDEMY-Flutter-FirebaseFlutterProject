@@ -1,6 +1,12 @@
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase/provider/user_provider.dart';
+import 'package:firebase/model/user_model.dart';
+import 'package:firebase/ui/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -14,31 +20,99 @@ class _ProfileState extends State<Profile> {
 
   final controller = TextEditingController();
 
+  final imagePicker = ImagePicker();
+  File? file;
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<AuthProvider>(context);
     final _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profilim'),
+        title: const Text('Profile'),
+        actions: [
+          IconButton(onPressed: (){
+            Get.to(()=>const EditProfile());
+          }, icon:const Icon(Icons.edit))
+        ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(_authProvider.user!.name!,style:const TextStyle(fontSize: 24),),
-              const SizedBox(width: 20,),
-              TextFormField(controller: controller , decoration:const InputDecoration(border:const OutlineInputBorder()),),
               const SizedBox(height: 20,),
-              Container(width:Get.width,child: ElevatedButton(onPressed: (){
-                _userProvider.updateUser(controller.text,_authProvider.user!.id!,context);
-              }, child:const Text('Update')))
+              Stack(
+                children: [
+                  ? CircleAvatar(
+                    radius: 60,
+                    backgroundColor:Colors.white,
+                    child: CachedNetworkImage(
+                       imageUrl: _userProvider.user.profilePhoto!,
+                    ),
+                  ),
+                  : CircleAvatar(
+                      backgroundImage: FileImage(file!),
+                      radius:60
+                    ),
+                Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child:GestureDetector(
+                      onTap: (){
+                        sowModalBottomSheet(
+                            context: context,
+                            builder: (context)=>Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(onTap: (){pickImage(ImageSource.gallery);},title:const Text('Galeriden Seç'),),
+                                ListTile(onTap: (){pickImage(ImageSource.camera)},title:const Text('Kameradan Seç'),),
+                              ],
+                            ),
+                          );
+                        },
+                      child: const CircleAvatar(
+                        radius: 18,
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 24,
+                          ),
+                      ),
+                    ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+
+            Text(
+              _userProvider.user.name!.capitalize!,
+              style:const TextStyle(fontSize: 26),
+            ),
+            const
+            SizedBox(
+              width: 20,
+            ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void pickImage(ImageSource source)async {
+    final _userProvider = Provider.of<UserProvider>(context,listen: false);
+    var photo = await imagePicker.pickImage(source: source);
+    if(photo != null){
+      setState(() {
+        file = File(photo.path);
+      });
+      _userProvider.updateFilePhoto(file._userProvider.user.id);
+      Get.back();
+    }
   }
 }

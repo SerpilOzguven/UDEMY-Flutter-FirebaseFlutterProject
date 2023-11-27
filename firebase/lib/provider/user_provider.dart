@@ -1,20 +1,56 @@
+// TODO Implement this library.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/service/auth_service.dart';
+import 'package:firebase/service/storageService.dart';
+import 'package:firebase/service/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
-class UserProvider extends ChangeNotifier{
-
+class UserProvider extends ChangeNotifier {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final userService = UserService();
-  final _authProvider = AuthProvider();
+  final authService = AuthService();
+  final storageService = StorageService();
+  UserModel user = UserModel();
 
-  UserProvider(){
-    print('çalýþtýr');
+  UserProvider() {
+    currentUser();
   }
 
+
+  void updateUser(String name, String id) async {
+    var isResult = await userService.updateUser(name, id);
+    if (isResult == true) {
+      var user = await userService.readUser(id);
+      this.user = user!;
+      notifyListeners();
+    }
+  }
+
+  Future<void> currentUser() async {
+    User? firebaseUser = authService.currentUser();
+    if (firebaseUser != null) {
+      user = (await userService.readUser(firebaseUser.uid))!;
+      notifyListeners();
+    }
+  }
+  void updateFilePhoto(File? photo, String? id)async{
+    String? url = await storageService.updateFilePhoto(photo);
+    if(url != null){
+      var result = await userService.updateFilePhoto(url,id!);
+      if(result == true){
+        user = (await userService.readUser(id))!;
+        notifyListeners();
+
+      }
+    }
+  }
+}
+  /*
   void getMap()async{
     var snapshot = await firestore
         .collection('users')
@@ -24,7 +60,7 @@ class UserProvider extends ChangeNotifier{
         .collection('users')
         .doc('pxJsbFaj9hSop6lqWWXK')
         .update({'number': FieldValue.arrayRemove([1])});//burada da belirlediðimiz elemaný kaldýrýyor
-    /*
+
     await firestore
         .collection('users')
         .doc('pxJsbFaj9hSop6lqWWXK')
@@ -54,15 +90,3 @@ class UserProvider extends ChangeNotifier{
     //print(date!.toDate());
     //var date1 = Timestamp.fromDate(DateTime.now());
     //firestore.collection('users').doc('pxJsbFaj9hSop6lqWWXK').set({'degerim':date1});
-  }
-  void updateUser(String name,String id,BuildContext context)async {
-    var isResult = await userService.updateUser(name, id);
-    if (isResult == true) {
-      print('Baþarýlý');
-    var user = await userService.readUser(id);
-    Provider.of<AuthProvider>(context,listen:false).user!.name = name;
-    notifyListeners();
-    }
-  }
-  }
-}

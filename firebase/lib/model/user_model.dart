@@ -5,29 +5,32 @@ class UserModel{
   String? email;
   String? name;
   String? phoneNumber;
-  MyMap? myMap;
-  List? liste;
-  Timestamp? degerim;
+  String? profilePhoto;
+  //MyMap? myMap;
+  //List? liste;
+  //Timestamp? degerim;
 
 
 
-  UserModel({this.email,this.id,this.name,this.phoneNumber,this.myMap,this.liste,this.degerim});
+  UserModel({this.email,this.id,this.name,this.phoneNumber,this.profilePhoto});
+  //UserModel({this.email,this.id,this.name,this.phoneNumber,this.myMap,this.liste,this.degerim});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     email: json['email'],
     phoneNumber: json['phoneNumber'],
     id: json['id'],
     name: json['name'],
-    degerim: json['degerim'],
+    profilePhoto: json['profilePhoto'],
+    //degerim: json['degerim'],
     //liste:List<int>.from(json['liste']) ,
-    myMap:MyMap.fromJson(json["myMap"]),
+    //myMap:MyMap.fromJson(json["myMap"]),
   );
 
   factory UserModel.fromDoc(DocumentSnapshot<Map<String,dynamic>> source)=>
       UserModel.fromJson(source.data()!);
 
 }
-
+/*
 class MyMap{
   var id;
   var school;
@@ -39,5 +42,6 @@ class MyMap{
     id: json['id'],
     school: json['school'],
   );
-
 }
+
+ */

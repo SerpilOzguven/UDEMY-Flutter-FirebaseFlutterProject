@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase/ui/landing_page.dart';
+import 'package:firebase/provider/user_provider.dart';
 
 
 class OtpScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<AuthProvider>(context);
+    final _authProvider = Provider.of<AuthProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('OTP Screen'),
@@ -57,24 +58,25 @@ class _OtpScreenState extends State<OtpScreen> {
                   child:ElevatedButton(onPressed: (){
                     if(formKey.currentState!.validate()){
                       _authProvider.phoneNumberControl(
-                      controller.text, widget.verificationId,widget.name).then((value){
+                      controller.text, widget.verificationId,widget.name).then((value)async{
                         if(value !null){
-                        Get.offAll(()=>  LandingPage());
-                  }
-                });
-              }
-            },
-              child:const Text(
-                'Check Code',
-                style: TextStyle(fontSize: 22),
-              ),
+                          await Provider.of<UserProvider>(context).currentUser();
+                          Get.offAll(()=>  LandingPage());
+                        }
+                      });
+                    }
+                  },
+                  child:const Text(
+                    'Check Code',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
             ),
+            ],
+          ),
+         )
         ),
-        ],
-      ),
-    )
-      ),
-    );
+      );
+    }
   }
-}
 

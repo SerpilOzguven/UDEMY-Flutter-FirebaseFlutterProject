@@ -9,11 +9,14 @@ class UserService{
   Future<UserModel?> saveUser(
       String? email, String name,String uid,{isEmail})async{
     await firestore.collection('users').doc(uid).set({
-      isEmail == false ? 'phoneNumber': 'email':email,'name':name,'id':uid});
-    var source = firestore.collection('users').doc(uid).get();
-    return UserModel.fromDoc(source);
-
+      isEmail == false ? 'phoneNumber':
+      'email':email,
+      'name':name,
+      'id':uid,
+      'profilPhoto':'https://en.m.wikipedia.org/wiki/File:User_icon_2.svg'
+    });
   }
+
   Future<UserModel?> readUser(String uid)async{
     var source = firestore.collection('users').doc(uid).get();
     return UserModel.fromDoc(source);
@@ -28,9 +31,15 @@ class UserService{
     }
 
   }
-  Future<bool?> update(String name)async{
-    var isResult = await firestore.collection('users').doc(id).update({'name':name,});
+  Future<bool?> updateUser(String name,String id)async{
+    var isResult = await firestore.collection('users').doc(id).update({'name':name});
     return true;
+
+  }
+  Future<bool?> updateProfilePhoto(String url, String id) async{
+    await firestore.collection('users').doc(id).update({'profilePhoto':url});
+    return true;
+
 
   }
 
