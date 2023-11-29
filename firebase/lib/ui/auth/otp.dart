@@ -1,4 +1,4 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,49 +33,50 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Center(
         child: Form(
           key: formKey,
-            child:Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child:  Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                TextFormField(
-                  controller: controller,
-                  validator: (value){
-                    if(value!.length < 7){
-                      return 'En az altý karakter giriniz';
-                    }
-                  },
-                decoration:const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Code',
-                  prefixIcon: Icon(Icons.messenger),
-                ),
+          child:Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child:  Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              TextFormField(
+              controller: controller,
+              validator: (value){
+                if(value!.length < 7){
+                  return 'En az altý karakter giriniz';
+                }
+              },
+              decoration:const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Code',
+                prefixIcon: Icon(Icons.messenger),
               ),
-              SizedBox(height: 20),
-              SizedBox(
-                  width: double.infinity,
-                  height: 65
-                  child:ElevatedButton(onPressed: (){
-                    if(formKey.currentState!.validate()){
-                      _authProvider.phoneNumberControl(
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+                width: double.infinity,
+                height: 65
+                child:ElevatedButton(onPressed: (){
+                  if(formKey.currentState!.validate()){
+                    _authProvider.phoneNumberControl(
                       controller.text, widget.verificationId,widget.name).then((value)async{
                         if(value !null){
                           await Provider.of<UserProvider>(context).currentUser();
                           Get.offAll(()=>  LandingPage());
                         }
-                      });
-                    }
-                  },
-                  child:const Text(
-                    'Check Code',
-                    style: TextStyle(fontSize: 22),
-                  ),
+                    });
+                  }
+                },
+                child:const Text(
+                  'Check Code',
+                  style: TextStyle(fontSize: 22),
                 ),
+              ),
             ),
-            ],
-          ),
-         )
+          ],
         ),
+       )
+      ),
+      ),
       );
     }
   }

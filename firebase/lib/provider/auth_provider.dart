@@ -2,10 +2,12 @@
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/service/auth_service.dart';
 import 'package:firebase/service/user_service.dart';
+import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class AuthProvider extends ChangeNotifier {
   final authService = AuthService();
@@ -22,7 +24,7 @@ class AuthProvider extends ChangeNotifier {
       return 'Mailinize onay kodu gönderilmiþtir';
     } catch (e) {
       var exception = AuthExceptionHandler.handleException(e);
-      return AuthExceptionHeandler.generateExceptionMessage(exception);
+      return AuthExceptionHandler.generateExceptionMessage(exception);
     }
   }
 
@@ -33,33 +35,37 @@ class AuthProvider extends ChangeNotifier {
       print('hata var $e');
     }
   }
-  Future<UserModel?> phoneNumberControl(String smsCode, verificationId, name)async{
+  Future<UserModel?> phoneNumberControl(
+      String smsCode, verificationId, name)async{
     try {
-      User? user2 = await authService.phoneNumberControl(smsCode, verificationId);
+      User? user2 =
+      await authService.phoneNumberControl(smsCode, verificationId);
       var result = await userService.userController(user2!.uid);
       if(result != null) {
         user = result;
         notifyListeners();
         return user;
       }else{
-        await userService.saveUser(user2.phoneNumber!,user2.uid,name,isEmail: false);
+        await userService.saveUser(user2.phoneNumber!,user2.uid,name,
+            isEmail: false);
         user = (await userService.readUser(user2.uid))!;
         notifyListeners();
         return user;
       }
     } catch (e) {
       var exceptionCode = AuthExceptionHandler.handleException(e);
-      var exceptionMessage = AuthExceptionHandler.generateExceptionMessage (exceptionCode);
+      var exceptionMessage =
+      AuthExceptionHandler.generateExceptionMessage (exceptionCode);
       Get.showSnackbar(GetSnackBar(
         title: 'Hata',
         message: exceptionMessage,
         duration: const Duration(seconds: 1),
       ));
-      print('hata var $e' );
+      //print('hata var $e' );
     }
   }
 
-  Future<UserModel?> registerWithGoogle()async{
+  Future registerWithGoogle()async{
     try{
       var user2 = await authService.registerWithGoogle();
       var result = await userService.userController(user2!.uid);
@@ -75,8 +81,8 @@ class AuthProvider extends ChangeNotifier {
         return user;
       }
     }catch(e){
-      print('hata var $e');
-      return null;
+
+      return e;
     }
   }
 
@@ -108,7 +114,7 @@ class AuthProvider extends ChangeNotifier {
          authService.signOut();
       }catch(e){
         print('sign out hata var');
-        Get.snackbar('Hata', 'Çýkýþ yapýlmadý $e')
+        Get.snackbar('Hata', 'Çýkýþ yapýlmadý $e');
 
       }
 

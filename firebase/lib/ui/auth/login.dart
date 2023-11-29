@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  var email = true;
+  var isEmail = true;
 
   var sizedBox = const SizedBox(height: 20,);
 
@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
                 sizedBox,
                 loginButton(authProvider, context),
                 sizedBox,
-                goRegister();
+                goRegister(),
                 sizedBox,
                 sizedBox,
 
@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
   GestureDetector goRegister() {
     return GestureDetector(
       onTap: () {
-        Get.to(() => const Register());
+        Get.off(() => const Register());
       },
       child: const Align(
         alignment: Alignment.centerRight,
@@ -106,62 +106,61 @@ class _LoginState extends State<Login> {
       AuthProvider authProvider, BuildContext context) {
     return GestureDetector(
                 onTap: () {
-                  authProvider.registerWithGoogle().then((value) {
+                  authProvider.registerWithGoogle(context).then((value) async {
                     if (value != null) {
                       await Provider.of<UserProvider>(context,listen: false).currentUser();
                       Get.offAll(() => const LandingPage(isLogin: true));
                     }
-                  }
-                });
-              },
-              child: Container(
-                width: Get.width,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      offset:const Offset(0, 0),
-                      blurRadius: 3,spreadRadius: 3)
-                  ]),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                  'assets/icons/google_icon.png',
-                  height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Sign in With Google',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  ),
-                ],
+                  });
+                },
+                child: Container(
+                  width: Get.width,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  decoration:const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        offset:const Offset(0, 0),
+                        blurRadius: 3,spreadRadius: 3)
+                    ]),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                    'assets/icons/google_icon.png',
+                    height: 30,
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Sign in With Google',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
 
   SizedBox loginButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
         width: double.infinity,
-        height: 65
+        height: 65,
         child:ElevatedButton(
         onPressed: (){
           if(formKey.currentState!.validate()){
-            if(isEmail){
+            if(isEmail) {
               authProvider
                 .loginWithEmail(emailController.text, passwordController.text)
                 .then((value)async {
               if(value.runtimeType == UserModel) {
                 await Provider.of<UserProvider>(context,listen: false).currentUser();
-                Get.offAll(()=>const LandingPage());
+                Get.offAll(() => const LandingPage());
               }else{
 
 

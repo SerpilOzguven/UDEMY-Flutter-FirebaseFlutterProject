@@ -47,13 +47,14 @@ class _ProfileState extends State<Profile> {
               const SizedBox(height: 20,),
               Stack(
                 children: [
+                  file == null
                   ? CircleAvatar(
                     radius: 60,
                     backgroundColor:Colors.white,
-                    child: CachedNetworkImage(
-                       imageUrl: _userProvider.user.profilePhoto!,
+                    backgroundImage: CachedNetworkImageProvider(
+                       _userProvider.user.profilePhoto!,
                     ),
-                  ),
+                  )
                   : CircleAvatar(
                       backgroundImage: FileImage(file!),
                       radius:60
@@ -105,7 +106,7 @@ class _ProfileState extends State<Profile> {
   }
 
   void pickImage(ImageSource source)async {
-    final _userProvider = Provider.of<UserProvider>(context,listen: false);
+    final _userProvider = Provider.of<UserProvider>(context, listen: false);
     var photo = await imagePicker.pickImage(source: source);
     if(photo != null){
       setState(() {

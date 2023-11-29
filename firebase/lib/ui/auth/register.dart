@@ -4,7 +4,6 @@ import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/auth/login.dart';
 import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +22,7 @@ class _RegisterState extends State<Register> {
   final phoneController = TextEditingController();
   final nameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  var email = true;
+  var isEmail = true;
 
   var sizedBox = const SizedBox(height: 20,);
 
@@ -41,7 +40,7 @@ class _RegisterState extends State<Register> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if(isEmail)
+                if (isEmail)
                   Column(
                     children: [
                       emailInput(),
@@ -101,9 +100,11 @@ class _RegisterState extends State<Register> {
     return GestureDetector(
       onTap: () {
         authProvider.registerWithGoogle().then((value)async {
-          if (value != null) {
-            await Provider.of<UserProvider>(context,listen: false).currentUser();
+          if (value.runtimeType == UserModel) {
             Get.snackbar('Baþarýlý', 'Baþarýyla giriþ yapýldý',
+                backgroundColor: Colors.green, colorText: Colors.white);
+          }else{
+            Get.snackbar('Hata', value,
                 backgroundColor: Colors.green, colorText: Colors.white);
           }
         });

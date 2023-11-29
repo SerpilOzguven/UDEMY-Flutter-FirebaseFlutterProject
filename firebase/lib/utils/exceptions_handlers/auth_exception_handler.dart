@@ -1,4 +1,4 @@
-enum AuthResultStatus {
+// TODO Implement this library.// TODO Implement this library.enum AuthResultStatus {
   successful,
   emailAlreadyExists,
   wrongPassword,
@@ -32,9 +32,6 @@ class AuthExceptionHandler {
         break;
       case 'weak-password':
         status = AuthResultStatus.passwordNotEnough;
-        break;
-      case 'ýnvalýd-emaýl':
-        status = AuthResultStatus.invalidEmail;
         break;
       case 'wrong-password':
         status = AuthResultStatus.wrongPassword;
@@ -152,3 +149,4 @@ class AuthExceptionHandler {
     return errorMessage;
   }
 }
+

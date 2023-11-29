@@ -1,7 +1,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase/ui/auth/otp.dart';
+import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+
 
 class AuthService{
 
@@ -20,7 +24,7 @@ class AuthService{
         await _auth.signInWithCredential(signInWithCredential);
       },
       verificationFailed: (FirebaseAuthException exception) {
-        var exceptionCode = AuthExceptionHandler.handleException.exception();
+        var exceptionCode = AuthExceptionHandler.handleException(exception);
         var exceptionMessage = AuthExceptionHandler.generateExceptionMessage(exceptionCode);
         Get.showSnackbar(GetSnackBar(
           title: 'Hata',
@@ -29,7 +33,7 @@ class AuthService{
         ));
       },
       codeSent: (verificationId, forceResendingToken) {
-        Get.to(() => OtpScreen(verificationId: verificationId,name: name));
+        Get.to(() => OtpScreen(verificationId: verificationId,name:name));
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print('codeAutoRetrievalTimeout');
@@ -44,16 +48,16 @@ class AuthService{
   }
   Future<User?> registerWithGoogle()async{
     final googleSignIn = GoogleSignIn();
-     var account = await googleSignIn.signIn();
-     if(account != null){
-        var auth = await account.authentication;
-        if(auth.accessToken != null && auth.idToken != null){
-           AuthCredential credential = GoogleAuthProvider.credential(
-               idToken: auth.idToken,accessToken: auth.accessToken);
-           var userCredential = await _auth.signInWithCredential(credential);
-           return userCredential.user;
-        }
-     }
+    var account = await googleSignIn.signIn();
+    if(account != null){
+      var auth = await account.authentication;
+      if(auth.accessToken != null && auth.idToken != null){
+        AuthCredential credential = GoogleAuthProvider.credential(
+            idToken: auth.idToken,accessToken: auth.accessToken);
+        var userCredential = await _auth.signInWithCredential(credential);
+        return userCredential.user;
+      }
+    }
   }
   Future<User?> loginWithEmail(String email, String password)async{
     var credentinal = await _auth.signInWithEmailAndPassword(email: email, password: password);

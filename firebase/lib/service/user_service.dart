@@ -17,21 +17,21 @@ class UserService{
     });
   }
 
-  Future<UserModel?> readUser(String uid)async{
-    var source = firestore.collection('users').doc(uid).get();
-    return UserModel.fromDoc(source);
-}
-
-  Future<UserModel?> userController(String uid)async{
+  Future<UserModel?> readUser(String uid, String id) async {
     var source = await firestore.collection('users').doc(uid).get();
-    if(source.data() != null){
-      return readUser(uid);
-    }else{
+    return UserModel.fromDoc(source);
+  }
+
+  Future<UserModel?> userController(String uid, String id) async {
+    var source = await firestore.collection('users').doc(uid).get();
+    if(source.data() != null) {
+      return readUser(uid, id);
+    } else{
+      print('data yok');
       return null;
     }
-
   }
-  Future<bool?> updateUser(String name,String id)async{
+  Future<bool?> updateUser(String name, String id)async{
     var isResult = await firestore.collection('users').doc(id).update({'name':name});
     return true;
 

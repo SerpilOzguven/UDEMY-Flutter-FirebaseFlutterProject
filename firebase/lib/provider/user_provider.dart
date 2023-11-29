@@ -1,9 +1,11 @@
-// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/service/auth_service.dart';
-import 'package:firebase/service/storageService.dart';
+import 'package:firebase/service/storage_service.dart';
 import 'package:firebase/service/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ class UserProvider extends ChangeNotifier {
   }
 
 
-  void updateUser(String name, String id) async {
+  Future<void> updateUser(String name, String id) async {
     var isResult = await userService.updateUser(name, id);
     if (isResult == true) {
       var user = await userService.readUser(id);
@@ -38,15 +40,18 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  void updateFilePhoto(File? photo, String? id)async{
+  Future<void> updateProfilePhoto(File? photo, String? id)async{
     String? url = await storageService.updateFilePhoto(photo);
     if(url != null){
       var result = await userService.updateFilePhoto(url,id!);
       if(result == true){
-        user = (await userService.readUser(id))!;
+        user = (await userService.readUser(uid, id));
         notifyListeners();
 
       }
+
+    }else{
+      print('url null');
     }
   }
 }
