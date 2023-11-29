@@ -1,24 +1,23 @@
-// TODO Implement this library.// TODO Implement this library.enum AuthResultStatus {
-  successful,
-  emailAlreadyExists,
-  wrongPassword,
-  invalidEmail,
-  userNotFound,
-  userDisabled,
-  operationNotAllowed,
-  tooManyRequests,
-  undefined,
-  invalidCredential,
-  abortedByUser,
-  accountAlreadyExist,
-  credentialAlreadyInUse,
-  passwordNotEnough,
-  invalidPhoneNumber,
-  invalidVerificationCode
+// TODO Implement this library.
+successful,
+emailAlreadyExists,
+wrongPassword,
+invalidEmail,
+userNotFound,
+userDisabled,
+operationNotAllowed,
+tooManyRequests,
+undefined,
+invalidCredential,
+abortedByUser,
+accountAlreadyExist,
+credentialAlreadyInUse,
+passwordNotEnough,
+invalidPhoneNumber,
+invalidVerificationCode
 }
-
-class AuthExceptionHandler {
-  static dynamic handleException(e) {
+class AuthExceptionHandler{
+  static dynamic handleException(e){
     AuthResultStatus status;
     switch (e.code) {
       case 'invalid-email':
@@ -85,8 +84,8 @@ class AuthExceptionHandler {
         status = AuthResultStatus.undefined;
     }
     return status;
-}
 
+  }
 
 
   ///

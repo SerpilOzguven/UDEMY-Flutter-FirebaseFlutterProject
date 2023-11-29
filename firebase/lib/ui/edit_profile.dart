@@ -1,17 +1,16 @@
+import 'package:firebase/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase/provider/user_provider.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-
   final controller = TextEditingController();
 
   @override
@@ -20,34 +19,33 @@ class _EditProfileState extends State<EditProfile> {
     controller.text = Provider.of<UserProvider>(context,listen: false).user.name!;
   }
 
-
   @override
   Widget build(BuildContext context) {
     final _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                controller: controller ,
-                decoration: const InputDecoration(hintText:'Name',border: OutlineInputBorder()),
+                controller: controller,
+                decoration: const InputDecoration(hintText: 'Name',border: OutlineInputBorder()),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 20),
-                width:Get.width,
-                height: 150,
+                width: Get.width,
+                height: 50,
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: () {
                     _userProvider.updateUser(
                         controller.text, _userProvider.user.id!).then((value) => Get.back());
                   },
-                  child:const Text('Update'),
+                  child: const Text('Update',style: TextStyle(fontSize: 18),),
                 ),
               ),
             ],
