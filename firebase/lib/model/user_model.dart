@@ -21,16 +21,23 @@ class UserModel{
     id: json['id'],
     name: json['name'],
     profilePhoto: json['profilePhoto'],
-    //degerim: json['degerim'],
-    //liste:List<int>.from(json['liste']) ,
-    //myMap:MyMap.fromJson(json["myMap"]),
+
   );
 
   factory UserModel.fromDoc(DocumentSnapshot<Map<String,dynamic>> source)=>
       UserModel.fromJson(source.data()!);
 
 }
+
+
+
+
 /*
+    //degerim: json['degerim'],
+    //liste:List<int>.from(json['liste']) ,
+    //myMap:MyMap.fromJson(json["myMap"]),
+
+
 class MyMap{
   var id;
   var school;

@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,7 +14,7 @@ class AuthService {
     return credentinal.user;
   }
 
-  registerWithPhoneNumber(String phoneNumber,name) async {
+  registerWithPhoneNumber(String phoneNumber, name) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (signInWithCredential) async {
@@ -20,16 +22,16 @@ class AuthService {
         await _auth.signInWithCredential(signInWithCredential);
       },
       verificationFailed: (FirebaseAuthException exception) {
-        var exceptionCode = AuthExceptionHandler.handleException(exception);
-        var exceptionMessage = AuthExceptionHandler.generateExceptionMessage(exceptionCode);
+        //var exceptionCode = AuthExceptionHandler.handleException(exception);
+        //var exceptionMessage = AuthExceptionHandler.generateExceptionMessage(exceptionCode);
         Get.showSnackbar(GetSnackBar(
           title: 'Hata',
-          message: exceptionMessage,
+          //message: exceptionMessage,
           duration: const Duration(seconds: 1),
-      ));
+        ));
       },
       codeSent: (verificationId, forceResendingToken) {
-        Get.to(() => OtpScreen(verificationId: verificationId,name:name));
+
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print('codeAutoRetrievalTimeout');
@@ -73,3 +75,4 @@ class AuthService {
   User? currentUser() {
     return _auth.currentUser;
   }
+}

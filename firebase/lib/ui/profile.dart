@@ -104,7 +104,6 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
   void pickImage(ImageSource source)async {
     final _userProvider = Provider.of<UserProvider>(context, listen: false);
     var photo = await imagePicker.pickImage(source: source);

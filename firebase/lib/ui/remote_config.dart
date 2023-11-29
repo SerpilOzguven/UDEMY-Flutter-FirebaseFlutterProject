@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
+
 class RemoteConfig extends StatefulWidget {
   const RemoteConfig({super.key});
 
@@ -26,14 +27,11 @@ class _RemoteConfigState extends State<RemoteConfig> {
     await remoteConfig.setConfigSettings(
       RemoteConfigSettings(
         fetchTimeout: const Duration(seconds: 10),
-        minimumFetchInterval: Duration(minutes: 3),
-        //minimumFetchInterval: Duration(seconds:1) olduðunda false döner, her saniyede günceller
-        //anlýk olrak dinlemek istiyorsak miliseconds:1 yazacaðýz süreyi azaltacaðýz
       ),
     );
+    var result = remoteConfig.getBool('isUpdate');
 
-    var result =  remoteConfig.getBool('isUpdate');
-    print(remoteConfig.getString('title'));
+    //print(remoteConfig.getString('title'));
     if (result == true){
       Get.showSnackbar(
         const GetSnackBar(
@@ -49,9 +47,14 @@ class _RemoteConfigState extends State<RemoteConfig> {
         ));
       }
     }
-
   @override
   Widget build(BuildContext context) {
     return Container();
   }
 }
+/*
+minimumFetchInterval: Duration(minutes: 3),
+minimumFetchInterval: Duration(seconds:1) olduðunda false döner, her saniyede günceller
+anlýk olrak dinlemek istiyorsak miliseconds:1 yazacaðýz süreyi azaltacaðýz
+
+ */

@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
                   TextFormField(
                     controller: phoneController,
                     validator: (value) {
-                      if(value!.length < 9){
+                      if (value!.length < 9) {
                         return 'En az dokuz karakter giriniz';
                       }
                     },
@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Text('Register With Email'),
-                    Checkbox(value: isEmail, onChanged: (value){
+                    Checkbox(value: isEmail, onChanged: (value) {
                       setState(() {
                         isEmail = value!;
                       });
@@ -102,92 +102,91 @@ class _LoginState extends State<Login> {
     );
   }
 
-  GestureDetector signInWithGoogle(
-      AuthProvider authProvider, BuildContext context) {
+  GestureDetector signInWithGoogle(AuthProvider authProvider,
+      BuildContext context) {
     return GestureDetector(
-                onTap: () {
-                  authProvider.registerWithGoogle(context).then((value) async {
-                    if (value != null) {
-                      await Provider.of<UserProvider>(context,listen: false).currentUser();
-                      Get.offAll(() => const LandingPage(isLogin: true));
-                    }
-                  });
-                },
-                child: Container(
-                  width: Get.width,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  decoration:const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade300,
-                        offset:const Offset(0, 0),
-                        blurRadius: 3,spreadRadius: 3)
-                    ]),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                    'assets/icons/google_icon.png',
-                    height: 30,
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Sign in With Google',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-            );
+      onTap: () {
+        authProvider.registerWithGoogle(context).then((value) async {
+          if (value != null) {
+            await Provider.of<UserProvider>(context, listen: false)
+                .currentUser();
+            Get.offAll(() => const LandingPage(isLogin: true));
           }
+        });
+      },
+      child: Container(
+        width: Get.width,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.shade300,
+                  offset: const Offset(0, 0),
+                  blurRadius: 3, spreadRadius: 3)
+            ]),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icons/google_icon.png',
+              height: 30,
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Sign in With Google',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   SizedBox loginButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
-        width: double.infinity,
-        height: 65,
-        child:ElevatedButton(
-        onPressed: (){
-          if(formKey.currentState!.validate()){
-            if(isEmail) {
+      width: double.infinity,
+      height: 65,
+      child: ElevatedButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            if (isEmail) {
               authProvider
-                .loginWithEmail(emailController.text, passwordController.text)
-                .then((value)async {
-              if(value.runtimeType == UserModel) {
-                await Provider.of<UserProvider>(context,listen: false).currentUser();
-                Get.offAll(() => const LandingPage());
-              }else{
-
-
+                  .loginWithEmail(emailController.text, passwordController.text)
+                  .then((value) async {
+                if (value.runtimeType == UserModel) {
+                  await Provider.of<UserProvider>(context, listen: false)
+                      .currentUser();
+                  Get.offAll(() => const LandingPage());
+                }
+              });
+            } else {
+              authProvider.registerWithPhoneNumber(phoneController.text, null);
             }
-          });
-        }else{
-          authProvider.registerWithPhoneNumber(phoneController.text,null);
-        }
-      }
-    },
-    child:const Text(
-      'Login',
-      style: TextStyle(fontSize: 22),
+          }
+        },
+        child: const Text(
+          'Login',
+          style: TextStyle(fontSize: 22),
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   TextFormField passwordInput() {
     return TextFormField(
       controller: phoneController,
-      validator: (value){
-        if(value!.length <9){
+      validator: (value) {
+        if (value!.length < 9) {
           return 'En az dokuz karakter giriniz';
         }
       },
-      decoration:const InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Password',
         prefixIcon: Icon(Icons.lock),
@@ -200,14 +199,12 @@ class _LoginState extends State<Login> {
     return TextFormField(
       controller: emailController,
       validator: (value) {
-        /*
-        bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+        bool emailValid = RegExp(
+            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
             .hasMatch(value!);
-        if(!emailValid) {
+        if (!emailValid) {
           return 'Lütfen geçerli email giriniz';
         }
-
-         */
       },
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
@@ -217,4 +214,5 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
 

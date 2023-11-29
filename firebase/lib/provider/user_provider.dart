@@ -1,4 +1,4 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,29 +27,28 @@ class UserProvider extends ChangeNotifier {
   Future<void> updateUser(String name, String id) async {
     var isResult = await userService.updateUser(name, id);
     if (isResult == true) {
-      var user = await userService.readUser(id);
+      var user = await userService.readUser(name,id);
       this.user = user!;
       notifyListeners();
     }
   }
 
-  Future<void> currentUser() async {
+  Future<void> currentUser(String name, String uid) async {
     User? firebaseUser = authService.currentUser();
     if (firebaseUser != null) {
-      user = (await userService.readUser(firebaseUser.uid))!;
+      user = (await userService.readUser(name,firebaseUser.uid))!;
       notifyListeners();
     }
   }
+
   Future<void> updateProfilePhoto(File? photo, String? id)async{
     String? url = await storageService.updateFilePhoto(photo);
-    if(url != null){
+    if (url != null){
       var result = await userService.updateFilePhoto(url,id!);
-      if(result == true){
-        user = (await userService.readUser(uid, id));
+      if (result == true){
+        user = (await userService.readUser(id))!;
         notifyListeners();
-
       }
-
     }else{
       print('url null');
     }

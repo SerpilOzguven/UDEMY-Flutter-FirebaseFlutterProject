@@ -39,9 +39,9 @@ class AuthProvider extends ChangeNotifier {
       String smsCode, verificationId, name)async{
     try {
       User? user2 =
-      await authService.phoneNumberControl(smsCode, verificationId);
+         await authService.phoneNumberControl(smsCode, verificationId);
       var result = await userService.userController(user2!.uid);
-      if(result != null) {
+      if (result != null) {
         user = result;
         notifyListeners();
         return user;
@@ -53,12 +53,12 @@ class AuthProvider extends ChangeNotifier {
         return user;
       }
     } catch (e) {
-      var exceptionCode = AuthExceptionHandler.handleException(e);
+      //var exceptionCode = AuthExceptionHandler.handleException(e);
       var exceptionMessage =
-      AuthExceptionHandler.generateExceptionMessage (exceptionCode);
+      //AuthExceptionHandler.generateExceptionMessage (exceptionCode);
       Get.showSnackbar(GetSnackBar(
         title: 'Hata',
-        message: exceptionMessage,
+        //message: exceptionMessage,
         duration: const Duration(seconds: 1),
       ));
       //print('hata var $e' );
@@ -68,12 +68,11 @@ class AuthProvider extends ChangeNotifier {
   Future registerWithGoogle()async{
     try{
       var user2 = await authService.registerWithGoogle();
-      var result = await userService.userController(user2!.uid);
-      if(result != null) {
+      var result = userService.userController(user2!.uid);
+      if (result != null) {
         user = result;
         notifyListeners();
         return user;
-
       }else{
         await userService.saveUser(user2.email!, user2.displayName!, user2.uid);
         user = (await userService.readUser(user2.uid))!;
@@ -81,7 +80,6 @@ class AuthProvider extends ChangeNotifier {
         return user;
       }
     }catch(e){
-
       return e;
     }
   }
@@ -89,22 +87,20 @@ class AuthProvider extends ChangeNotifier {
   Future loginWithEmail(String email, String password)async{
     try{
       var firebaseUser = await authService.loginWithEmail(email,password);
-      if(firebaseUser!.emailVerified) {
+      if (firebaseUser!.emailVerified) {
         user = (await userService.readUser(firebaseUser.uid))!;
         notifyListeners();
         return user;
       }else{
         return 'Lütfen mailinize gelen kodu onaylayýnýz';
-
       }
     }catch(e){
       var exceptionCode = AuthExceptionHandler.handleException(e);
       var exceptionMessage = AuthExceptionHandler .generateExceptionMessage (exceptionCode);
       Get.showSnackbar(GetSnackBar(
         title: 'Hata',
-        message: exceptionMessage,
+        //message: exceptionMessage,
         duration: const Duration(seconds: 1),
-
       ));
       return e.toString();
       }
@@ -115,10 +111,7 @@ class AuthProvider extends ChangeNotifier {
       }catch(e){
         print('sign out hata var');
         Get.snackbar('Hata', 'Çýkýþ yapýlmadý $e');
-
       }
-
     }
-
   }
 
