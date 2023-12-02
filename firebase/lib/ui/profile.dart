@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase/provider/user_provider.dart';
-import 'package:firebase/model/user_model.dart';
 import 'package:firebase/ui/edit_profile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

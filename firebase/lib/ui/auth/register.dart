@@ -1,4 +1,4 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/provider/user_provider.dart';
@@ -217,7 +217,7 @@ class _RegisterState extends State<Register> {
       controller: emailController,
       validator: (value) {
         bool emailValid = RegExp(
-            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(value!);
         if (!emailValid) {
           return 'Lütfen geçerli email giriniz';

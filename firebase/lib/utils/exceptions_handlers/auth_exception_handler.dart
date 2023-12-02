@@ -89,7 +89,6 @@ class AuthExceptionHandler{
       }
     return status;
   }
-
   ///
   /// Accepts AuthExceptionHandler.errorType
   ///

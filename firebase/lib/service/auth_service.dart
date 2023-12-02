@@ -45,7 +45,6 @@ class AuthService {
     var userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user;
   }
-
   Future<User?> registerWithGoogle() async {
     final googleSignIn = GoogleSignIn();
     var account = await googleSignIn.signIn();

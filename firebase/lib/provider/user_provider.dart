@@ -1,6 +1,5 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/auth_provider.dart';
@@ -19,7 +18,7 @@ class UserProvider extends ChangeNotifier {
   final storageService = StorageService();
   UserModel user = UserModel();
 
-  UserProvider() {
+  UserProvider(){
     currentUser();
   }
 
@@ -41,10 +40,10 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfilePhoto(File? photo, String? id)async{
-    String? url = await storageService.updateFilePhoto(photo);
+  Future<void> updateProfilePhoto(File? photo, String? id) async{
+    String? url = await storageService.updateProfilePhoto(photo);
     if (url != null){
-      var result = await userService.updateFilePhoto(url,id!);
+      var result = await userService.updateProfilePhoto(url,id!);
       if (result == true){
         user = (await userService.readUser(id))!;
         notifyListeners();

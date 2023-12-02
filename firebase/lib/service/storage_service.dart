@@ -8,7 +8,7 @@ class StorageService{
   FirebaseStorage storage = FirebaseStorage.instance;
 
 
-  Future<String?> updateFilePhoto(photo)async {
+  Future<String?> updateProfilePhoto(photo)async {
     var uuid = const Uuid().v4();
     var ref = storage.ref('photos').child(uuid);
     var url ;

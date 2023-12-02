@@ -11,7 +11,6 @@ class RemoteConfig extends StatefulWidget {
 
 
 class _RemoteConfigState extends State<RemoteConfig> {
-
   @override
   void initState() {
     super.initState();

@@ -4,6 +4,7 @@ import 'package:firebase/model/user_model.dart';
 
 class UserService {
 
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<UserModel?> saveUser(String? email, String name, String uid,
@@ -38,7 +39,7 @@ class UserService {
     return true;
   }
 
-  Future<bool?> updateFilePhoto(String url, String id) async {
+  Future<bool?> updateProfilePhoto(String url, String id) async {
     await firestore.collection('users').doc(id).update({'profilePhoto': url});
     return true;
   }

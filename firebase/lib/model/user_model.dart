@@ -12,7 +12,8 @@ class UserModel{
 
 
 
-  UserModel({this.email,this.id,this.name,this.phoneNumber,this.profilePhoto});
+  UserModel(
+      {this.email,this.id,this.name,this.phoneNumber,this.profilePhoto});
   //UserModel({this.email,this.id,this.name,this.phoneNumber,this.myMap,this.liste,this.degerim});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -21,12 +22,10 @@ class UserModel{
     id: json['id'],
     name: json['name'],
     profilePhoto: json['profilePhoto'],
-
   );
 
   factory UserModel.fromDoc(DocumentSnapshot<Map<String,dynamic>> source)=>
       UserModel.fromJson(source.data()!);
-
 }
 
 

@@ -200,7 +200,7 @@ class _LoginState extends State<Login> {
       controller: emailController,
       validator: (value) {
         bool emailValid = RegExp(
-            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(value!);
         if (!emailValid) {
           return 'Lütfen geçerli email giriniz';
