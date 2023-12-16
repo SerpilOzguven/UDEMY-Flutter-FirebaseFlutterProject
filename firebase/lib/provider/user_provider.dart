@@ -1,4 +1,4 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/model/user_model.dart';
@@ -16,7 +16,7 @@ class UserProvider extends ChangeNotifier {
   final userService = UserService();
   final authService = AuthService();
   final storageService = StorageService();
-  UserModel user = UserModel();
+  UserModel? user = UserModel();
 
   UserProvider(){
     currentUser();
@@ -35,20 +35,20 @@ class UserProvider extends ChangeNotifier {
   Future<void> currentUser(String name, String uid) async {
     User? firebaseUser = authService.currentUser();
     if (firebaseUser != null) {
-      user = (await userService.readUser(name,firebaseUser.uid))!;
+      user = (await userService.readUser(firebaseUser.uid))!;
       notifyListeners();
     }
   }
 
   Future<void> updateProfilePhoto(File? photo, String? id) async{
     String? url = await storageService.updateProfilePhoto(photo);
-    if (url != null){
+    if(url != null){
       var result = await userService.updateProfilePhoto(url,id!);
       if (result == true){
         user = (await userService.readUser(id))!;
         notifyListeners();
       }
-    }else{
+    } else {
       print('url null');
     }
   }

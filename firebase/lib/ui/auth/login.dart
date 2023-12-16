@@ -2,6 +2,7 @@
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/ui/register.dart';
 import 'package:firebase/provider/auth_provider.dart';
+import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
   var isEmail = true;
 
-  var sizedBox = const SizedBox(height: 20,);
+  var sizedBox = const SizedBox(height: 20);
 
   @override
   Widget build(BuildContext context) {
@@ -47,29 +48,20 @@ class _LoginState extends State<Login> {
                     ],
                   )
                 else
-                  TextFormField(
-                    controller: phoneController,
-                    validator: (value) {
-                      if (value!.length < 9) {
-                        return 'En az dokuz karakter giriniz';
-                      }
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone),
-                    ),
-                  ),
+                  phoneInput(),
                 sizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Text('Register With Email'),
-                    Checkbox(value: isEmail, onChanged: (value) {
-                      setState(() {
-                        isEmail = value!;
-                      });
-                    }),
+                    Checkbox(
+                        value: isEmail,
+                        onChanged: (value) {
+                          setState(() {
+                            isEmail = value!;
+                        });
+                      },
+                    ),
                   ],
                 ),
                 sizedBox,
@@ -78,7 +70,6 @@ class _LoginState extends State<Login> {
                 goRegister(),
                 sizedBox,
                 sizedBox,
-
                 signInWithGoogle(authProvider, context)
               ],
             ),
@@ -87,7 +78,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
   GestureDetector goRegister() {
     return GestureDetector(
       onTap: () {
@@ -101,9 +91,8 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
-  GestureDetector signInWithGoogle(AuthProvider authProvider,
-      BuildContext context) {
+  GestureDetector signInWithGoogle(
+      AuthProvider authProvider,BuildContext context) {
     return GestureDetector(
       onTap: () {
         authProvider.registerWithGoogle(context).then((value) async {
@@ -125,7 +114,8 @@ class _LoginState extends State<Login> {
               BoxShadow(
                   color: Colors.grey.shade300,
                   offset: const Offset(0, 0),
-                  blurRadius: 3, spreadRadius: 3)
+                  blurRadius: 3,
+                  spreadRadius: 3)
             ]),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -136,7 +126,7 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(width: 10),
             const Text(
-              'Sign in With Google',
+              'Sign In With Google',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -144,6 +134,21 @@ class _LoginState extends State<Login> {
             ),
           ],
         ),
+      ),
+    );
+  }
+  TextFormField phoneInput() {
+    return TextFormField(
+      controller: phoneController,
+      validator: (value) {
+        if (value!.length < 9) {
+          return 'En az 9 karakter giriniz';
+        }
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Phone Number',
+        prefixIcon: Icon(Icons.phone),
       ),
     );
   }
@@ -177,7 +182,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
   TextFormField passwordInput() {
     return TextFormField(
       controller: phoneController,
@@ -190,11 +194,9 @@ class _LoginState extends State<Login> {
         border: OutlineInputBorder(),
         hintText: 'Password',
         prefixIcon: Icon(Icons.lock),
-
       ),
     );
   }
-
   TextFormField emailInput() {
     return TextFormField(
       controller: emailController,
@@ -210,7 +212,6 @@ class _LoginState extends State<Login> {
         border: OutlineInputBorder(),
         hintText: 'Email',
         prefixIcon: Icon(Icons.email),
-
       ),
     );
   }

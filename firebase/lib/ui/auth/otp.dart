@@ -1,7 +1,7 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
-
-
-
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+import 'package:firebase/provider/auth_provider.dart';
+import 'package:firebase/provider/user_provider.dart';
+import 'package:firebase/ui/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +19,6 @@ class _OtpScreenState extends State<OtpScreen> {
   final controller = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<AuthProvider>(context,listen: false);
@@ -39,45 +35,46 @@ class _OtpScreenState extends State<OtpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
               TextFormField(
-              controller: controller,
-              validator: (value){
-                if(value!.length < 7){
-                  return 'En az altý karakter giriniz';
-                }
-              },
-              decoration:const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Code',
-                prefixIcon: Icon(Icons.messenger),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-                width: double.infinity,
-                height: 65
-                child:ElevatedButton(onPressed: (){
-                  if(formKey.currentState!.validate()){
-                    _authProvider.phoneNumberControl(
-                      controller.text, widget.verificationId,widget.name).then((value)async{
-                        if(value !null){
-                          await Provider.of<UserProvider>(context).currentUser();
-                          Get.offAll(()=>  LandingPage());
-                        }
-                    });
+                controller: controller,
+                validator: (value){
+                  if(value!.length < 7){
+                    return 'En az altý karakter giriniz';
                   }
                 },
-                child:const Text(
-                  'Check Code',
-                  style: TextStyle(fontSize: 22),
+                decoration:const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Code',
+                  prefixIcon: Icon(Icons.messenger),
                 ),
               ),
+            const SizedBox(height: 20),
+            SizedBox(
+                width: double.infinity,
+                height: 55,
+                child:ElevatedButton(
+                  onPressed: (){
+                    if(formKey.currentState!.validate()) {
+                      _authProvider.phoneNumberControl(
+                        controller.text, widget.verificationId,widget.name).then((value)async{
+                          if(value !null){
+                            await Provider.of<UserProvider>(context).currentUser();
+                            Get.offAll(()=>  LandingPage());
+                          }
+                      });
+                    }
+                  },
+                  child:const Text(
+                    'Check Code',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
+              ),
+              ],
             ),
-          ],
+          ),
         ),
-       )
       ),
-      ),
-      );
-    }
+    );
   }
+}
 

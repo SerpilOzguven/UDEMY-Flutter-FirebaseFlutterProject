@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase/model/user_model.dart';
 
 class HomePage extends StatefulWidget {
-  final isLogin;
+  final bool? isLogin;
   const HomePage({super.key, this.isLogin});
 
   @override
@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.green, colorText: Colors.white);
       });
     }
-
   }
 
   @override
@@ -39,15 +38,20 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title:const Text('Home Page'),
         actions: [
-          IconButton(onPressed: (){
-            authProvider
-                .signOut().then((value){
-              _userProvider.user = UserModel();
+          IconButton(
+              onPressed: (){
+                authProvider.signOut().then((value){
+                  _userProvider.user = UserModel();
             }); //.then((value) => Get.offAll(()=>const LandingPage()));
-          }, icon:const Icon(Icons.logout)),
-          IconButton(onPressed: (){
-            Get.to(()=> const Profile()); //.then((value) => Get.offAll(()=>const LandingPage()));
-          }, icon:const Icon(Icons.person)),
+          },
+              icon:const Icon(Icons.logout),
+          ),
+          IconButton(
+              onPressed: (){
+                Get.to(()=> const Profile()); //.then((value) => Get.offAll(()=>const LandingPage()));
+          },
+              icon:const Icon(Icons.person),
+          ),
         ],
       ),
       body: Center(
@@ -56,4 +60,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// TODO Implement this library.

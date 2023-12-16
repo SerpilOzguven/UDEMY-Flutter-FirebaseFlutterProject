@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+
 class AuthService {
   final _auth = FirebaseAuth.instance;
 
@@ -30,8 +31,8 @@ class AuthService {
           duration: const Duration(seconds: 1),
         ));
       },
-      codeSent: (verificationId, forceResendingToken) {
-
+      codeSent: (verificationId, forceResendingToken){
+        //Get.to(() => OtpScreen(verificationId: verificationId,name:name));
       },
       codeAutoRetrievalTimeout: (verificationId) {
         print('codeAutoRetrievalTimeout');
@@ -58,7 +59,6 @@ class AuthService {
       }
     }
   }
-
   Future<User?> loginWithEmail(String email, String password) async {
     var credential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);

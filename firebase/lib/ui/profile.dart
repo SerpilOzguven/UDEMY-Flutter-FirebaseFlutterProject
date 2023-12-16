@@ -18,13 +18,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   final controller = TextEditingController();
-
   final imagePicker = ImagePicker();
   File? file;
-
-
 
 
   @override
@@ -34,18 +30,20 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
-          IconButton(onPressed: (){
-            Get.to(()=>const EditProfile());
-          }, icon:const Icon(Icons.edit))
+          IconButton(
+              onPressed: (){
+                Get.to(()=>const EditProfile());
+          },
+              icon:const Icon(Icons.edit))
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,),
               Stack(
                 children: [
                   file == null
@@ -66,38 +64,47 @@ class _ProfileState extends State<Profile> {
                     child:GestureDetector(
                       onTap: (){
                         sowModalBottomSheet(
-                            context: context,
-                            builder: (context)=>Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ListTile(onTap: (){pickImage(ImageSource.gallery);},title:const Text('Galeriden Seç'),),
-                                ListTile(onTap: (){pickImage(ImageSource.camera)},title:const Text('Kameradan Seç'),),
+                          context: context,
+                          builder: (context)=>Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                onTap: (){
+                                  pickImage(ImageSource.gallery);
+                                  },
+                                title:const Text('Galeriden Seç'),
+                              ),
+                              ListTile(
+                                onTap: (){
+                                  pickImage(ImageSource.camera);
+                                  },
+                                title:const Text('Kameradan Seç'),
+                              ),
                               ],
                             ),
                           );
                         },
-                      child: const CircleAvatar(
-                        radius: 18,
+                        child: const CircleAvatar(
+                          radius: 18,
                           child: Icon(
                             Icons.camera_alt_outlined,
                             size: 24,
                           ),
+                        ),
                       ),
-                    ),
-                ),
-              ],
-            ),
+                  )
+                ],
+              ),
             const SizedBox(
               height: 20,
             ),
-
             Text(
               _userProvider.user.name!.capitalize!,
               style:const TextStyle(fontSize: 26),
             ),
             const
             SizedBox(
-              width: 20,
+              height: 20,
             ),
             ],
           ),
@@ -105,7 +112,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-  void pickImage(ImageSource source)async {
+  void pickImage(ImageSource source) async {
     final _userProvider = Provider.of<UserProvider>(context, listen: false);
     var photo = await imagePicker.pickImage(source: source);
     if(photo != null){

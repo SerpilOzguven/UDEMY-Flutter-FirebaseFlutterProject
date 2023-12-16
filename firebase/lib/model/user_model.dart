@@ -24,7 +24,7 @@ class UserModel{
     profilePhoto: json['profilePhoto'],
   );
 
-  factory UserModel.fromDoc(DocumentSnapshot<Map<String,dynamic>> source)=>
+  factory UserModel.fromDoc(DocumentSnapshot<Map<String, dynamic>> source)=>
       UserModel.fromJson(source.data()!);
 }
 

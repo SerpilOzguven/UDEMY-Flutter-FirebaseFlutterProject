@@ -1,9 +1,10 @@
-// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
+// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.// TODO Implement this library.
 import 'package:firebase/model/user_model.dart';
 import 'package:firebase/provider/auth_provider.dart';
 import 'package:firebase/provider/user_provider.dart';
 import 'package:firebase/ui/auth/login.dart';
 import 'package:firebase/utils/exceptions_handlers/auth_exception_handler.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterState extends State<Register>{
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
@@ -141,60 +142,42 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-
   SizedBox registerButton(AuthProvider authProvider, BuildContext context) {
     return SizedBox(
-        width: double.infinity,
-        height: 65,
-        child:ElevatedButton(onPressed: ()
-    {
-      if (formKey.currentState!.validate()) {
-        if (isEmail) {
-          authProvider
-              .registerWithEmail(
-              emailController.text, passwordController.text,
-              nameController.text).then((value)async {
-            if (value != null) {
-             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(value), duration: const Duration(seconds: 1),
-
-                ),
-              );
-             Get.to(()=>const Login());
+      width: double.infinity,
+      height: 65,
+      child:ElevatedButton(
+        onPressed: (){
+          if (formKey.currentState!.validate()) {
+            if (isEmail) {
+              authProvider
+                .registerWithEmail(emailController.text,
+                  passwordController.text,
+                  nameController.text)
+                  .then((value)async {
+                if (value != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(value),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                  Get.to(()=>const Login());
+                }
+              });
+          } else {
+          authProvider.registerWithPhoneNumber(
+              phoneController.text);
           }
-          });
-        } else {
-          authProvider.registerWithPhoneNumber(phoneController.text);
-        }
-      }
-    },
-    child:const Text(
-    'Register',
-    style: TextStyle(fontSize: 22),
-    ),
-    )
-    ,
-    );
-  }
-
-
-  TextFormField phoneInput() {
-    return TextFormField(
-      controller: phoneController,
-      validator: (value) {
-        if (value!.length < 9) {
-          return 'En az 9 karakter giriniz';
         }
       },
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Phone Number',
-        prefixIcon: Icon(Icons.phone),
+      child:const Text(
+        'Register',
+        style: TextStyle(fontSize: 22),
       ),
+     ),
     );
   }
-
   TextFormField passwordInput() {
     return TextFormField(
       controller: phoneController,
@@ -217,7 +200,7 @@ class _RegisterState extends State<Register> {
       controller: emailController,
       validator: (value) {
         bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(value!);
         if (!emailValid) {
           return 'Lütfen geçerli email giriniz';
